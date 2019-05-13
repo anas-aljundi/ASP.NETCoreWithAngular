@@ -1,8 +1,8 @@
 using System;
 
-namespace API.Models
+namespace API.Dtos
 {
-    public class Photo
+    public class PhotoForReturnDto
     {
         public int PhotoId { get; set; }
         public string PhotoUrl { get; set; }
@@ -10,9 +10,5 @@ namespace API.Models
         public DateTime DateAdded { get; set; }
         public bool IsMain { get; set; }
         public string PublicId { get; set; }
-        public User User { get; set; }
-        public int UserId { get; set; }
-
-
     }
 }

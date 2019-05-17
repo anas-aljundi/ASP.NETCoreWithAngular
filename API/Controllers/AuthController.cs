@@ -35,19 +35,17 @@ namespace API.Controllers
             if (await _repo.UserExists(user.UserName))
                 return BadRequest("The UserName is Already Exist");
 
-            var userToCreate = new User()
-            {
-                UserName = user.UserName
-            };
+            var userToCreate = _mapper.Map<User>(user);
 
             var createdUser = await _repo.Register(userToCreate, user.Password);
-            return StatusCode(201);
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createdUser);
+            return CreatedAtRoute("GetUser", new { Controller = "Users", id = createdUser.UserId}, userToReturn);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLogin)
         {
-            var userFromRepo = await _repo.Login(userForLogin.LoginUserName.ToLower(), userForLogin.LoginPassword);
+            var userFromRepo = await _repo.Login(userForLogin.UserName.ToLower(), userForLogin.Password);
             if (userFromRepo == null)
                 return Unauthorized();
 

@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Linq;
 using API.Models;
 using Newtonsoft.Json;
 
@@ -16,7 +17,9 @@ namespace API.Data
 
         public void SeedUsers()
         {
-            var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
+            if (!_context.Users.Any()) 
+            {
+                var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
             var users = JsonConvert.DeserializeObject<List<User>>(userData);
             foreach (var user in users)
              {
@@ -28,6 +31,8 @@ namespace API.Data
                 _context.Users.Add(user);
             }
             _context.SaveChanges();
+            }
+            
         }
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
